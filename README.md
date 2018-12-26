@@ -17,7 +17,7 @@ nock是一款依赖于数据库的分布式调度引擎， 基于著名的开源
 [Document](https://github.com/half-half/nock/wiki)
 
 # 开发团队
-[关于我们]()
+[关于我们](https://github.com/half-half/nock/wiki/5%E3%80%81%E5%85%B3%E4%BA%8E%E6%88%91%E4%BB%AC)
 
 
 
