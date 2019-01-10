@@ -11,6 +11,7 @@
 	<modules>
 		<module>nock</module>
 		<module>nock-spring-support</module>
+        <module>nock-example</module>
 
     </modules>
 
