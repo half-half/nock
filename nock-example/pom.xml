@@ -13,6 +13,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>pure-startup</module>
+        <module>spring-startup</module>
     </modules>
 
 
