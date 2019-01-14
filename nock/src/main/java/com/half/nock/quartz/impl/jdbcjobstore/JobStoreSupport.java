@@ -1153,7 +1153,7 @@ public abstract class JobStoreSupport implements JobStore, NockJDBCConstants {
     public void storeJob(final JobDetail newJob,
                          final boolean replaceExisting) throws JobPersistenceException {
         executeInLock(
-                (isLockOnInsert() || replaceExisting) ? isUseSemaphoreLock() ? triggerManager.getCurrentSemaphoreLock() : LOCK_TRIGGER_ACCESS : null,
+                (isLockOnInsert() || replaceExisting) ? isUseSemaphoreLock() ? null: LOCK_TRIGGER_ACCESS : null,
                 new VoidTransactionCallback() {
                     public void executeVoid(Connection conn) throws JobPersistenceException {
                         storeJob(conn, newJob, replaceExisting);
@@ -1351,7 +1351,7 @@ public abstract class JobStoreSupport implements JobStore, NockJDBCConstants {
     public boolean removeJobs(final List<JobKey> jobKeys) throws JobPersistenceException {
 
         return (Boolean) executeInLock(
-                isUseSemaphoreLock() ? triggerManager.getCurrentSemaphoreLock() : LOCK_TRIGGER_ACCESS,
+                isUseSemaphoreLock() ? null : LOCK_TRIGGER_ACCESS,
                 new TransactionCallback() {
                     public Object execute(Connection conn) throws JobPersistenceException {
                         boolean allFound = true;
@@ -1368,7 +1368,7 @@ public abstract class JobStoreSupport implements JobStore, NockJDBCConstants {
     public boolean removeTriggers(final List<TriggerKey> triggerKeys)
             throws JobPersistenceException {
         return (Boolean) executeInLock(
-                isUseSemaphoreLock() ? triggerManager.getCurrentSemaphoreLock() : LOCK_TRIGGER_ACCESS,
+                isUseSemaphoreLock() ? null : LOCK_TRIGGER_ACCESS,
                 new TransactionCallback() {
                     public Object execute(Connection conn) throws JobPersistenceException {
                         boolean allFound = true;
@@ -1387,7 +1387,7 @@ public abstract class JobStoreSupport implements JobStore, NockJDBCConstants {
             throws JobPersistenceException {
 
         executeInLock(
-                (isLockOnInsert() || replace) ? isUseSemaphoreLock() ? triggerManager.getCurrentSemaphoreLock() : LOCK_TRIGGER_ACCESS : null,
+                (isLockOnInsert() || replace) ? isUseSemaphoreLock() ? null: LOCK_TRIGGER_ACCESS : null,
                 new VoidTransactionCallback() {
                     public void executeVoid(Connection conn) throws JobPersistenceException {
 
@@ -1533,7 +1533,7 @@ public abstract class JobStoreSupport implements JobStore, NockJDBCConstants {
     public boolean replaceTrigger(final TriggerKey triggerKey,
                                   final OperableTrigger newTrigger) throws JobPersistenceException {
         return (Boolean) executeInLock(
-                isUseSemaphoreLock() ? triggerManager.getCurrentSemaphoreLock() : LOCK_TRIGGER_ACCESS,
+                isUseSemaphoreLock() ? null : LOCK_TRIGGER_ACCESS,
                 new TransactionCallback() {
                     public Object execute(Connection conn) throws JobPersistenceException {
                         return replaceTrigger(conn, triggerKey, newTrigger) ?
@@ -2308,7 +2308,7 @@ public abstract class JobStoreSupport implements JobStore, NockJDBCConstants {
      */
     public void pauseJob(final JobKey jobKey) throws JobPersistenceException {
         executeInLock(
-                isUseSemaphoreLock() ? triggerManager.getCurrentSemaphoreLock() : LOCK_TRIGGER_ACCESS,
+                isUseSemaphoreLock() ? null: LOCK_TRIGGER_ACCESS,
                 new VoidTransactionCallback() {
                     public void executeVoid(Connection conn) throws JobPersistenceException {
                         List<OperableTrigger> triggers = getTriggersForJob(conn, jobKey);
@@ -2404,7 +2404,7 @@ public abstract class JobStoreSupport implements JobStore, NockJDBCConstants {
      */
     public void resumeTrigger(final TriggerKey triggerKey) throws JobPersistenceException {
         executeInLock(
-                isUseSemaphoreLock() ? triggerManager.getCurrentSemaphoreLock() : LOCK_TRIGGER_ACCESS,
+                isUseSemaphoreLock() ? null : LOCK_TRIGGER_ACCESS,
                 new VoidTransactionCallback() {
                     public void executeVoid(Connection conn) throws JobPersistenceException {
                         resumeTrigger(conn, triggerKey);
@@ -2483,7 +2483,7 @@ public abstract class JobStoreSupport implements JobStore, NockJDBCConstants {
      */
     public void resumeJob(final JobKey jobKey) throws JobPersistenceException {
         executeInLock(
-                isUseSemaphoreLock() ? triggerManager.getCurrentSemaphoreLock() : LOCK_TRIGGER_ACCESS,
+                isUseSemaphoreLock() ? null : LOCK_TRIGGER_ACCESS,
                 new VoidTransactionCallback() {
                     public void executeVoid(Connection conn) throws JobPersistenceException {
                         List<OperableTrigger> triggers = getTriggersForJob(conn, jobKey);
@@ -2512,7 +2512,7 @@ public abstract class JobStoreSupport implements JobStore, NockJDBCConstants {
     public Set<String> resumeJobs(final GroupMatcher<JobKey> matcher)
             throws JobPersistenceException {
         return (Set<String>) executeInLock(
-                isUseSemaphoreLock() ? triggerManager.getCurrentSemaphoreLock() : LOCK_TRIGGER_ACCESS,
+                isUseSemaphoreLock() ? null : LOCK_TRIGGER_ACCESS,
                 new TransactionCallback() {
                     public Set<String> execute(Connection conn) throws JobPersistenceException {
                         Set<JobKey> jobKeys = getJobNames(conn, matcher);
@@ -2542,7 +2542,7 @@ public abstract class JobStoreSupport implements JobStore, NockJDBCConstants {
     public Set<String> pauseTriggers(final GroupMatcher<TriggerKey> matcher)
             throws JobPersistenceException {
         return (Set<String>) executeInLock(
-                isUseSemaphoreLock() ? triggerManager.getCurrentSemaphoreLock() : LOCK_TRIGGER_ACCESS,
+                isUseSemaphoreLock() ? null: LOCK_TRIGGER_ACCESS,
                 new TransactionCallback() {
                     public Set<String> execute(Connection conn) throws JobPersistenceException {
                         return pauseTriggerGroup(conn, matcher);
@@ -2639,7 +2639,7 @@ public abstract class JobStoreSupport implements JobStore, NockJDBCConstants {
     public Set<String> resumeTriggers(final GroupMatcher<TriggerKey> matcher)
             throws JobPersistenceException {
         return (Set<String>) executeInLock(
-                isUseSemaphoreLock() ? triggerManager.getCurrentSemaphoreLock() : LOCK_TRIGGER_ACCESS,
+                isUseSemaphoreLock() ? null : LOCK_TRIGGER_ACCESS,
                 new TransactionCallback() {
                     public Set<String> execute(Connection conn) throws JobPersistenceException {
                         return resumeTriggerGroup(conn, matcher);
@@ -2734,7 +2734,7 @@ public abstract class JobStoreSupport implements JobStore, NockJDBCConstants {
      */
     public void pauseAll() throws JobPersistenceException {
         executeInLock(
-                isUseSemaphoreLock() ? triggerManager.getCurrentSemaphoreLock() : LOCK_TRIGGER_ACCESS,
+                isUseSemaphoreLock() ? null : LOCK_TRIGGER_ACCESS,
                 new VoidTransactionCallback() {
                     public void executeVoid(Connection conn) throws JobPersistenceException {
                         pauseAll(conn);
@@ -2793,7 +2793,7 @@ public abstract class JobStoreSupport implements JobStore, NockJDBCConstants {
     public void resumeAll()
             throws JobPersistenceException {
         executeInLock(
-                isUseSemaphoreLock() ? triggerManager.getCurrentSemaphoreLock() : LOCK_TRIGGER_ACCESS,
+                isUseSemaphoreLock() ? null : LOCK_TRIGGER_ACCESS,
                 new VoidTransactionCallback() {
                     public void executeVoid(Connection conn) throws JobPersistenceException {
                         resumeAll(conn);
