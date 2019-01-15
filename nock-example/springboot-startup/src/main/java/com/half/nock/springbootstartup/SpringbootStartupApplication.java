@@ -1,16 +1,19 @@
 package com.half.nock.springbootstartup;
 
 import com.half.nock.quartz.spring.quartz.SchedulerFactoryBean;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.quartz.Scheduler;
+import org.quartz.SchedulerException;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 
 import javax.sql.DataSource;
 import java.io.IOException;
 
 @SpringBootApplication
+@Configuration
 public class SpringbootStartupApplication {
 
 
@@ -29,6 +32,25 @@ public class SpringbootStartupApplication {
 		factory.setOverwriteExistingJobs(true);
 		return factory;
 	}
+
+	@Bean
+	public SchedulerBean schedulerBean(SchedulerFactoryBean schedulerFactoryBean) {
+		SchedulerBean schedulerBean = new SchedulerBean();
+		try {
+
+
+			Scheduler scheduler = schedulerFactoryBean.getScheduler();
+
+			scheduler.start();
+
+
+		} catch (SchedulerException e) {
+			e.printStackTrace();
+		}
+		return schedulerBean;
+	}
+
+
 
 }
 
